@@ -1,5 +1,5 @@
-import { Entity } from "./entity"
-import { IComponent } from "./component.h"
+import { Entity } from './entity'
+import { IComponent } from './component.h'
 
 // mock up class
 class E extends Entity { }

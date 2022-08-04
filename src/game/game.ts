@@ -1,9 +1,14 @@
 import { Entity } from '@/utils'
+import { Grid } from '@/grid'
 
 export class Game extends Entity {
   private _lastTimestamp = 0
 
-  public Entities: Entity[] = []
+  public _entities: Entity[] = []
+
+  public get Entities(): Entity[] {
+    return this._entities
+  }
 
   /**
    * Awake
@@ -12,8 +17,10 @@ export class Game extends Entity {
     // awake all components by calling parent
     super.Awake()
 
+    this._entities.push(new Grid())
+
     // awake child entity
-    for (const entity of this.Entities) {
+    for (const entity of this._entities) {
       entity.Awake()
     }
 
@@ -37,7 +44,7 @@ export class Game extends Entity {
     super.Update(deltaTime)
 
     // update child entity
-    for (const entity of this.Entities) {
+    for (const entity of this._entities) {
       entity.Update(deltaTime)
     }
 
