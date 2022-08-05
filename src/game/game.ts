@@ -1,5 +1,7 @@
 import { Entity } from '@/utils'
+import { Fleet } from '@/fleet'
 import { Grid } from '@/grid'
+import { Team } from '@/team'
 
 export class Game extends Entity {
   private _lastTimestamp = 0
@@ -10,14 +12,16 @@ export class Game extends Entity {
     return this._entities
   }
 
-  /**
-   * Awake
-   */
   public Awake(): void {
     // awake all components by calling parent
     super.Awake()
 
-    this._entities.push(new Grid())
+    const grid = new Grid()
+    this._entities.push(
+      grid,
+      new Fleet(Team.A, grid),
+      new Fleet(Team.B, grid),
+    )
 
     // awake child entity
     for (const entity of this._entities) {
@@ -34,9 +38,6 @@ export class Game extends Entity {
     })
   }
 
-  /**
-   * Update
-   */
   public Update(): void {
     const deltaTime = (Date.now() - this._lastTimestamp) / 100
 

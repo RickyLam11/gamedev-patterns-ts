@@ -1,3 +1,4 @@
+import { Fleet } from '@/fleet'
 import { Game } from '@/game'
 import { Grid } from '@/grid'
 import { IComponent } from '@/utils'
@@ -84,14 +85,20 @@ describe('>>> Game', () => {
   it('should awake and update all children', () => {
     const spyGridAwake = jest.spyOn(Grid.prototype, 'Awake')
     const spyGridUpdate = jest.spyOn(Grid.prototype, 'Update')
+    const spyFleetAwake = jest.spyOn(Fleet.prototype, 'Awake')
+    const spyFleetUpdate = jest.spyOn(Fleet.prototype, 'Update')
 
     expect(spyGridAwake).not.toBeCalled()
     expect(spyGridUpdate).not.toBeCalled()
+    expect(spyFleetAwake).not.toBeCalled()
+    expect(spyFleetUpdate).not.toBeCalled()
 
     game.Awake()
     expect(spyGridAwake).toBeCalled()
+    expect(spyFleetAwake).toBeCalled()
 
     game.Update()
     expect(spyGridUpdate).toBeCalled()
+    expect(spyFleetUpdate).toBeCalled()
   })
 })

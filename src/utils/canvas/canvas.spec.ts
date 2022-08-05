@@ -1,5 +1,4 @@
-import { Canvas } from './canvas'
-import { Vector2D } from '@/utils'
+import { Canvas, Color, Vector2D } from '@/utils'
 
 describe('>>> Canvas', () => {
   const size = new Vector2D(100, 100)
@@ -29,7 +28,6 @@ describe('>>> Canvas', () => {
     it('should draw and fill the rect', () => {
       const start = new Vector2D(0, 0)
       const size = new Vector2D(10, 10)
-      const color = '#ffff00'
 
       const spyBeginPath = jest.spyOn(canvas.Context, 'beginPath')
       const spyRect = jest.spyOn(canvas.Context, 'rect')
@@ -39,12 +37,12 @@ describe('>>> Canvas', () => {
       expect(spyRect).not.toBeCalled()
       expect(spyFill).not.toBeCalled()
 
-      canvas.FillRect(start, size, color)
+      canvas.FillRect(start, size, new Color(255, 255, 255, 1))
 
       expect(spyBeginPath).toBeCalled()
       expect(spyRect).toBeCalledWith(start.x, start.y, size.x, size.y)
       expect(spyFill).toBeCalled()
-      expect(canvas.Context.fillStyle).toBe(color)
+      expect(canvas.Context.fillStyle).toBe<string>('#ffffff')
     })
 
     it('should clear the rect', () => {
@@ -58,6 +56,32 @@ describe('>>> Canvas', () => {
       canvas.ClearRect(start, size)
 
       expect(spy).toBeCalledWith(start.x, start.y, size.x, size.y)
+    })
+
+    it('should draw and fill the circle', () => {
+      const center = new Vector2D(0, 0)
+      const radius = 1
+
+      const spyBeginPath = jest.spyOn(canvas.Context, 'beginPath')
+      const spyArc = jest.spyOn(canvas.Context, 'arc')
+      const spyFill = jest.spyOn(canvas.Context, 'fill')
+
+      canvas.FillCircle(center, radius, new Color(255, 255, 255, 1))
+
+      expect(spyBeginPath).toBeCalled()
+      expect(spyArc).toBeCalledWith(center.x, center.y, radius, 0, 2 * Math.PI)
+      expect(spyFill).toBeCalled()
+      expect(canvas.Context.fillStyle).toBe('#ffffff')
+    })
+
+    it('should set css style', () => {
+      const zIndex = '1'
+
+      expect(canvas.Element.style.zIndex).not.toBe<string>(zIndex)
+
+      canvas.SetStyle({ zIndex })
+
+      expect(canvas.Element.style.zIndex).toBe<string>(zIndex)
     })
   })
 })
