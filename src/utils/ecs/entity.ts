@@ -2,7 +2,12 @@ import { IComponent } from './component.h'
 import { IAwake, IUpdate } from '@/utils'
 
 // shortern code
-type constr<T> = { new(...args: unknown[]): T }
+// type constr<T> = { new(...args: unknown[]): T }
+// handle abstract class (component)
+/* eslint-disable @typescript-eslint/ban-types */
+type AbstractComponent<T> = Function & { prototype: T }
+type constr<T> = AbstractComponent<T> | { new(...args: unknown[]): T }
+/* eslint-enable @typescript-eslint/ban-types */
 
 export abstract class Entity implements IAwake, IUpdate {
   protected _components: IComponent[] = []

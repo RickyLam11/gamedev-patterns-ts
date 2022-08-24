@@ -1,6 +1,7 @@
 import { NodeDrawComponent } from './draw'
 import { CanvasLayer } from '@/canvas-layer'
 import { mockNodeFactory } from '@/node'
+import { Settings } from '@/settings'
 
 describe('>>> Node Draw Component', () => {
   let comp: NodeDrawComponent
@@ -10,7 +11,7 @@ describe('>>> Node Draw Component', () => {
     comp.Entity = mockNodeFactory()
   })
 
-  it('should cleanup when awakens', ()=>{
+  it('should cleanup when awakens', () => {
     const spy = jest.spyOn(CanvasLayer.Background, 'ClearRect')
     expect(spy).not.toBeCalled()
 
@@ -19,7 +20,7 @@ describe('>>> Node Draw Component', () => {
     expect(spy).toBeCalled()
   })
 
-  it('should cleanup and draw rect every frame', ()=>{
+  it('should cleanup and draw rect every frame', () => {
     const spyClearRect = jest.spyOn(CanvasLayer.Background, 'ClearRect')
     const spyFillRect = jest.spyOn(CanvasLayer.Background, 'FillRect')
 
@@ -32,4 +33,15 @@ describe('>>> Node Draw Component', () => {
     expect(spyFillRect).toBeCalled()
   })
 
+  it('should active color if entity is active and regular color otherwise', () => {
+    const spyFillRect = jest.spyOn(CanvasLayer.Background, 'FillRect')
+
+    comp.Entity.IsActive = true
+    comp.Update(0)
+    expect(spyFillRect).toBeCalledWith(comp.Entity.Start, comp.Entity.Size, Settings.grid.color.active)
+
+    comp.Entity.IsActive = false
+    comp.Update(0)
+    expect(spyFillRect).toBeCalledWith(comp.Entity.Start, comp.Entity.Size, Settings.grid.color.regular)
+  })
 })

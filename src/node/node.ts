@@ -2,6 +2,8 @@ import { Entity, Vector2D } from '@/utils'
 import { NodeDrawComponent } from './components'
 
 export class Node extends Entity {
+  public IsActive = false
+
   constructor(
     public readonly Start: Vector2D,
     public readonly End: Vector2D,
@@ -29,5 +31,21 @@ export class Node extends Entity {
       this.End.x - this.Start.x,
       this.End.y - this.Start.y
     )
+  }
+
+  public Occupies(point: Vector2D): boolean {
+    if (point.x < this.Start.x) {
+      return false
+    }
+    if (this.End.x < point.x) {
+      return false
+    }
+    if (point.y < this.Start.y) {
+      return false
+    }
+    if (this.End.y < point.y) {
+      return false
+    }
+    return true
   }
 }
