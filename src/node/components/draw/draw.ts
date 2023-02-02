@@ -1,5 +1,5 @@
 import { CanvasLayer } from '@/canvas-layer'
-import { Color, IComponent } from '@/utils'
+import { Color, IComponent, Vector2D } from '@/utils'
 import { Node } from '@/node'
 import { Settings } from '@/settings'
 
@@ -25,7 +25,7 @@ export class NodeDrawComponent implements IComponent {
     CanvasLayer.Background.FillRect(
       this.Entity.Start,
       this.Entity.Size,
-      this.Entity.IsActive ? Settings.grid.color.active : Settings.grid.color.regular
+      this.Entity.IsInLocomotionRange ? Settings.grid.color.inLocomotionRange : Settings.grid.color.regular
     )
   }
 
@@ -40,5 +40,13 @@ export class NodeDrawComponent implements IComponent {
       entity.Start,
       new Color(255, 0, 0, 1)
     )
+
+    if (this.Entity.Ship) {
+      CanvasLayer.Background.DrawText(
+        'Ship',
+        new Vector2D(entity.Start.x + 40, entity.Start.y),
+        new Color(255, 0, 0, 1)
+      )
+    }
   }
 }

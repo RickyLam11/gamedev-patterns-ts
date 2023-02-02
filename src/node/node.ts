@@ -1,13 +1,17 @@
+import { Ship } from '@/ship'
 import { Entity, Vector2D } from '@/utils'
 import { NodeDrawComponent } from './components'
 
 export class Node extends Entity {
   public IsActive = false
+  public Ship: Ship | null = null
+  public IsInLocomotionRange = false
 
   constructor(
     public readonly Start: Vector2D,
     public readonly End: Vector2D,
-    public readonly Index: Vector2D
+    public readonly Index: Vector2D,
+    public readonly Neighbors: Node[]
   ) {
     super()
   }
@@ -47,5 +51,20 @@ export class Node extends Entity {
       return false
     }
     return true
+  }
+
+  public FindAndSetInLocomotionRange(range: number): void {
+    if (!this.Ship) {
+      this.IsInLocomotionRange = true
+    }
+
+    const newRange = --range
+    if (newRange <= 0) {
+      return
+    }
+
+    this.Neighbors
+      .filter(neighbor => !neighbor.Ship)
+      .map(neighbor => neighbor.FindAndSetInLocomotionRange(range))
   }
 }

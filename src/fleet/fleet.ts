@@ -38,5 +38,9 @@ export class Fleet extends Entity {
 
       ship.Awake()
     }
+
+    if (this.Team === Team.A) {
+      this._ship[0].IsActive = true
+    }
   }
 }
