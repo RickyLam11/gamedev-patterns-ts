@@ -62,16 +62,13 @@ describe('>>> Grid', () => {
       grid.DeterminePathTo(destination)
 
       const path = grid.Nodes.filter(node => node.IsOnPath)
-      expect(path[0].Index).toStrictEqual(new Vector2D(1, 0))
-      expect(path[1].Index).toStrictEqual(new Vector2D(2, 0))
-      expect(path[2].Index).toStrictEqual(new Vector2D(3, 0))
-      expect(path[3].Index).toStrictEqual(new Vector2D(4, 0))
-      expect(path[4].Index).toStrictEqual(new Vector2D(5, 0))
-      expect(path[5].Index).toStrictEqual(new Vector2D(5, 1))
-      expect(path[6].Index).toStrictEqual(new Vector2D(5, 2))
-      expect(path[7].Index).toStrictEqual(new Vector2D(5, 3))
-      expect(path[8].Index).toStrictEqual(new Vector2D(5, 4))
-      expect(path[9].Index).toStrictEqual(new Vector2D(5, 5))
+      const dimension = Settings.grid.dimension
+      for (let i = 0; i < dimension - 2; i++) {
+        expect(path[i].Index).toStrictEqual(new Vector2D(i + 1, 0))
+      }
+      for (let i = dimension - 1; i < 2 * dimension - 2; i++) {
+        expect(path[i].Index).toStrictEqual(new Vector2D(dimension - 1, i - dimension + 2))
+      }
     })
   })
 })
