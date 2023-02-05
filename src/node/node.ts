@@ -1,11 +1,11 @@
 import { Ship } from '@/ship'
-import { Entity, Vector2D } from '@/utils'
+import { Entity, IGraphNode, Vector2D } from '@/utils'
 import { NodeDrawComponent } from './components'
 
-export class Node extends Entity {
-  public IsActive = false
+export class Node extends Entity implements IGraphNode {
   public Ship: Ship | null = null
   public IsInLocomotionRange = false
+  public IsOnPath = false
 
   constructor(
     public readonly Start: Vector2D,
@@ -21,6 +21,10 @@ export class Node extends Entity {
       this.Start.x + this.Size.x / 2,
       this.Start.y + this.Size.y / 2,
     )
+  }
+
+  public get Position(): Vector2D {
+    return this.Index
   }
 
   public Awake(): void {

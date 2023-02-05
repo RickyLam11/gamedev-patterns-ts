@@ -21,15 +21,19 @@ export class Ship extends Entity {
     }
   }
 
+  public get Node(): Node {
+    return this._locomotionComponent.Node
+  }
+
+  public get Position(): Vector2D | null {
+    return this._locomotionComponent.Position
+  }
+
   // why name Factory ?
   constructor(public readonly Factory: Fleet, node: Node) {
     super()
 
     this._locomotionComponent = new ShipLocomotionComponent(node)
-  }
-
-  public get Position(): Vector2D | null {
-    return this._locomotionComponent.Position
   }
 
   public Awake(): void {

@@ -5,7 +5,7 @@ import { Team } from '@/team'
 import { Grid } from '@/grid'
 
 export class Fleet extends Entity {
-  private _ship: Ship[] = []
+  private _ships: Ship[] = []
 
   constructor(
     public readonly Team: Team,
@@ -23,7 +23,7 @@ export class Fleet extends Entity {
   public Update(deltaTime: number): void {
     super.Update(deltaTime)
 
-    this._ship.map(ship => ship.Update(deltaTime))
+    this._ships.map(ship => ship.Update(deltaTime))
   }
 
   private PrepareShips(): void {
@@ -34,13 +34,16 @@ export class Fleet extends Entity {
     for (let i = 0; i < fleetSize; i++) {
       const node = this.Team === Team.A ? nodes[i * dimension] : nodes[nodes.length - 1 - i * dimension]
       const ship = new Ship(this, node)
-      this._ship.push(ship)
+      this._ships.push(ship)
 
       ship.Awake()
     }
 
+    // @todo start with state machine
     if (this.Team === Team.A) {
-      this._ship[0].IsActive = true
+      const activeShip = this._ships[0]
+      activeShip.IsActive = true
+      this._grid.ActiveShip = activeShip
     }
   }
 }
