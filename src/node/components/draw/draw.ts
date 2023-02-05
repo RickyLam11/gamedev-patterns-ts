@@ -52,7 +52,7 @@ export class NodeDrawComponent implements IComponent {
       new Color(255, 0, 0, 1)
     )
 
-    if (this.Entity.Ship) {
+    if (entity.Ship) {
       CanvasLayer.Background.DrawText(
         'Ship',
         new Vector2D(entity.Start.x + 40, entity.Start.y),
